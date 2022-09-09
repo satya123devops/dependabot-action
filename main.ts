@@ -2,10 +2,10 @@ import * as core from '@actions/core';
 // import execa = require('execa');
 // import { context, getOctokit } from '@actions/github';
 // import { combinePRs } from './utils/pull-requests';
-// import getInputs from './utils/getInputs';
+import getInputs from './utils/getInputs';
 // import { repoPRFetch } from './utils/repoPRFetch'
 import axios from 'axios';
-const token = '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'
+const token = ''
 
 const handleError = (err: Error) => {
   core.error(err);
@@ -89,6 +89,9 @@ function scenario2(closedData: any) {
 
 const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
+  const combinePullsParams = await getInputs();
+  const { githubToken } = combinePullsParams;
+  console.log(githubToken)
   try {
     const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
         headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
