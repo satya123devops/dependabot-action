@@ -1,0 +1,16 @@
+specials:
+    - bin
+    - eslint
+    - ttypescript
+    - jest
+    - prettier
+
+parsers:
+    '**/*.ts':
+        - typescript
+
+ignores:
+    - '@tsconfig/node14'
+    - '@types/jest'
+    - '@types/node'
+    - '@types/json-schema'

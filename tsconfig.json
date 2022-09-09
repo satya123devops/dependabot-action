@@ -1,0 +1,17 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": ["./types", "node_modules/@types"],
+    "moduleResolution": "node",
+    "outDir": "./lib",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["lib", "dist", "node_modules"]
+}
