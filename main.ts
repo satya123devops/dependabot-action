@@ -90,8 +90,9 @@ function scenario2(closedData: any) {
 const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
   const combinePullsParams = await getInputs();
-  const { githubToken } = combinePullsParams;
-  console.log(githubToken)
+  console.log(combinePullsParams)
+  //const { githubToken } = combinePullsParams;
+  //console.log(githubToken)
   try {
     const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
         headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },

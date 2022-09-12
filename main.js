@@ -149,14 +149,13 @@ function scenario2(closedData) {
     }
 }
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var combinePullsParams, githubToken, data, data_1, dependabotFilteredData, openData, closedData, e_1, err_2;
+    var combinePullsParams, data, data_1, dependabotFilteredData, openData, closedData, e_1, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, (0, getInputs_1["default"])()];
             case 1:
                 combinePullsParams = _a.sent();
-                githubToken = combinePullsParams.githubToken;
-                console.log(githubToken);
+                console.log(combinePullsParams);
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 10, , 11]);
