@@ -38,17 +38,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var core_1 = require("@actions/core");
 var getInputs = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var baseBranch;
+    var baseBranch, githubToken;
     return __generator(this, function (_a) {
         baseBranch = (0, core_1.getInput)('baseBranch', { required: true });
-        // const githubToken = getInput('githubToken', { required: false });
+        githubToken = (0, core_1.getInput)('githubToken', { required: true });
         // const openPR = getBooleanInput('openPR', { required: false });
         return [2 /*return*/, {
                 // branchPrefix,
                 // mustBeGreen,
                 // combineBranchName,
                 // ignoreLabel,
-                baseBranch: baseBranch
+                baseBranch: baseBranch,
+                githubToken: githubToken
             }];
     });
 }); };
