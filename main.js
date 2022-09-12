@@ -49,13 +49,13 @@ var handleError = function (err) {
     core.setFailed("Unhandled error: ".concat(err));
 };
 process.on('unhandledRejection', handleError);
-function fetchPackageName(head_sha, base_sha) {
+function fetchPackageName(head_sha, base_sha, githubToken) {
     return __awaiter(this, void 0, void 0, function () {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/dependency-graph/compare/".concat(base_sha, "...").concat(head_sha), {
-                        headers: { Authorization: "Bearer ".concat(token), Accept: 'application/json' }
+                        headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
                 case 1:
                     data = (_a.sent()).data;
@@ -65,7 +65,7 @@ function fetchPackageName(head_sha, base_sha) {
     });
 }
 ;
-function fetchIsMerged(number) {
+function fetchIsMerged(number, githubToken) {
     return __awaiter(this, void 0, void 0, function () {
         var status_1, err_1;
         return __generator(this, function (_a) {
@@ -73,7 +73,7 @@ function fetchIsMerged(number) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls/".concat(number, "/merge"), {
-                            headers: { Authorization: "Bearer ".concat(token), Accept: 'application/json' }
+                            headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                         })];
                 case 1:
                     status_1 = (_a.sent()).status;
@@ -90,12 +90,12 @@ function fetchIsMerged(number) {
     });
 }
 ;
-function scenario1(openData) {
+function scenario1(openData, githubToken) {
     var openIndex = 0;
     openData.forEach(function (data) {
         var head_sha = data.head.sha;
         var base_sha = data.base.sha;
-        var packageName = fetchPackageName(head_sha, base_sha);
+        var packageName = fetchPackageName(head_sha, base_sha, githubToken);
         packageName.then(function (packageData) {
             openIndex++;
             if (packageData.length > 0) {
@@ -118,13 +118,13 @@ function scenario1(openData) {
         });
     });
 }
-function scenario2(closedData) {
+function scenario2(closedData, githubToken) {
     var countSuccess = 0;
     var countFailed = 0;
     var mergingIndex = 0;
     if (closedData.length > 0) {
         closedData.forEach(function (data) {
-            var mergeData = fetchIsMerged(data.number);
+            var mergeData = fetchIsMerged(data.number, githubToken);
             mergeData.then(function (merge) {
                 mergingIndex++;
                 if (merge === true) {
@@ -162,7 +162,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 2:
                 _a.trys.push([2, 10, , 11]);
                 return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After", {
-                        headers: { Authorization: "Bearer ".concat(token), Accept: 'application/json' }
+                        headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 3:
                 data = (_a.sent()).data;
@@ -173,7 +173,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 4:
                 _a.trys.push([4, 6, , 7]);
                 return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all", {
-                        headers: { Authorization: "Bearer ".concat(token), Accept: 'application/json' }
+                        headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 5:
                 data_1 = (_a.sent()).data;
@@ -187,14 +187,14 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                         });
                         if (openData.length > 0) {
                             console.log("Open data found");
-                            scenario1(openData);
+                            scenario1(openData, githubToken);
                         }
                         else {
                             console.log("No open data found");
                             closedData = dependabotFilteredData.filter(function (data) {
                                 return data.state == 'closed';
                             });
-                            scenario2(closedData);
+                            scenario2(closedData, githubToken);
                         }
                     }
                     else {

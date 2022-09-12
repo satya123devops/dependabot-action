@@ -14,17 +14,17 @@ const handleError = (err: Error) => {
 
 process.on('unhandledRejection', handleError);
 
-async function fetchPackageName (head_sha: any, base_sha: any) {
+async function fetchPackageName (head_sha: any, base_sha: any, githubToken: any) {
   const { data } = ( await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/dependency-graph/compare/${base_sha}...${head_sha}`, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+      headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
   }));
   return data;
 };
 
-async function fetchIsMerged (number: any) {
+async function fetchIsMerged (number: any, githubToken: any) {
   try {
     const { status } = ( await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls/${number}/merge`, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+      headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
     if (status === 204) {return true}
   } catch(err) {
@@ -32,12 +32,12 @@ async function fetchIsMerged (number: any) {
   }
 };
 
-function scenario1(openData: any) {
+function scenario1(openData: any, githubToken: any) {
   let openIndex = 0
   openData.forEach( (data: any) => {
     var head_sha = data.head.sha
     var base_sha = data.base.sha
-    const packageName = fetchPackageName(head_sha, base_sha)
+    const packageName = fetchPackageName(head_sha, base_sha, githubToken)
     packageName.then((packageData) => {
       openIndex++
       if(packageData.length > 0) {
@@ -59,13 +59,13 @@ function scenario1(openData: any) {
   });
 }
 
-function scenario2(closedData: any) {
+function scenario2(closedData: any, githubToken: any) {
     let countSuccess = 0;
     let countFailed = 0;
     let mergingIndex = 0;
     if(closedData.length > 0){
       closedData.forEach( (data: any) => {
-        const mergeData = fetchIsMerged(data.number)
+        const mergeData = fetchIsMerged(data.number, githubToken)
         mergeData.then((merge: any) => {
           mergingIndex++
           if(merge === true) {
@@ -95,14 +95,14 @@ const run = async (): Promise<void> => {
   console.log("token issssss "+githubToken)
   try {
     const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
-        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+        headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
     console.log(process.env)
     console.log("default_branch is " + data.default_branch)
     if(data.default_branch === 'main') {
       try {
         const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+          headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
         }));
         if(data.length > 0) {
           var dependabotFilteredData = data.filter(function(data : any){
@@ -114,13 +114,13 @@ const run = async (): Promise<void> => {
             });
             if(openData.length > 0) {
               console.log("Open data found")
-              scenario1(openData)
+              scenario1(openData, githubToken)
             } else {
               console.log("No open data found")
               var closedData = dependabotFilteredData.filter(function(data : any){
                 return data.state == 'closed';
               });
-              scenario2(closedData)
+              scenario2(closedData, githubToken)
             }
           } else {
             console.log("No dependabot data found")
