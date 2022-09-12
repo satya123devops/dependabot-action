@@ -103,16 +103,16 @@ function scenario1(openData, githubToken) {
                 });
                 for (var _i = 0, packageJsonData_1 = packageJsonData; _i < packageJsonData_1.length; _i++) {
                     var data = packageJsonData_1[_i];
-                    console.log("NAME = " + data.name + "," + " VERSION = " + data.version + "," +
+                    core.warning("NAME = " + data.name + "," + " VERSION = " + data.version + "," +
                         " DEPENDABOT_CHANGE_TYPE = " + data.change_type + "," +
                         " SEVERITY = " + JSON.stringify(data.vulnerabilities));
                 }
                 if (openIndex === openData.length) {
-                    console.log("Process Failed");
+                    core.setFailed("Step Failed");
                 }
             }
             else {
-                console.log("Process Passed");
+                core.info("hooray.... Step Passed No Dependabot alerts found");
             }
         });
     });
@@ -134,17 +134,17 @@ function scenario2(closedData, githubToken) {
                 }
                 if (mergingIndex === closedData.length) {
                     if (closedData.length === countSuccess) {
-                        console.log("Process Passed");
+                        core.info("hooray.... Step Passed No Open PR's found created by Dependabot");
                     }
                     else {
-                        console.log("Process Failed because " + countFailed + " PR is/are not merged");
+                        core.setFailed("Step Failed because " + countFailed + " PR is/are not merged");
                     }
                 }
             });
         });
     }
     else {
-        console.log("No closed Data found");
+        core.info("No closed PR's found");
     }
 }
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -155,7 +155,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 0: return [4 /*yield*/, (0, getInputs_1["default"])()];
             case 1:
                 combinePullsParams = _c.sent();
-                console.log(combinePullsParams);
+                core.info(combinePullsParams);
                 githubToken = combinePullsParams.githubToken;
                 _c.label = 2;
             case 2:
@@ -165,8 +165,8 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 3:
                 data = (_c.sent()).data;
-                console.log("process.env brnch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
-                console.log("default_branch is " + data.default_branch);
+                core.info("process.env brnch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
+                core.info("default_branch is " + data.default_branch);
                 if (!(data.default_branch === ((_b = process.env.GITHUB_REF) === null || _b === void 0 ? void 0 : _b.replace("refs/heads/", '')))) return [3 /*break*/, 8];
                 _c.label = 4;
             case 4:
@@ -185,11 +185,11 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                             return data.state == 'open';
                         });
                         if (openData.length > 0) {
-                            console.log("Open data found");
+                            core.info("Open PR's found Created by Dependabot");
                             scenario1(openData, githubToken);
                         }
                         else {
-                            console.log("No open data found");
+                            core.info("No Open PR's found Created by Dependabot Checking for Closed PR's Merged Status...");
                             closedData = dependabotFilteredData.filter(function (data) {
                                 return data.state == 'closed';
                             });
@@ -197,11 +197,11 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                         }
                     }
                     else {
-                        console.log("No dependabot data found");
+                        core.info("No dependabot data found");
                     }
                 }
                 else {
-                    console.log("No data found");
+                    core.info("No data found");
                 }
                 return [3 /*break*/, 7];
             case 6:

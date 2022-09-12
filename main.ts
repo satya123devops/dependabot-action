@@ -44,15 +44,15 @@ function scenario1(openData: any, githubToken: any) {
           return data.manifest == "package.json";
         });
         for (var data of packageJsonData) {
-          console.log("NAME = " + data.name + "," + " VERSION = " + data.version + "," +
+          core.warning("NAME = " + data.name + "," + " VERSION = " + data.version + "," +
           " DEPENDABOT_CHANGE_TYPE = " + data.change_type + "," +
           " SEVERITY = " + JSON.stringify(data.vulnerabilities))
         }
         if(openIndex === openData.length) {
-          console.log("Process Failed")
+          core.setFailed("Step Failed")
         }
       } else {
-        console.log("Process Passed")
+        core.info("hooray.... Step Passed No Dependabot alerts found")
       }
     });
   });
@@ -74,29 +74,29 @@ function scenario2(closedData: any, githubToken: any) {
           }
           if(mergingIndex === closedData.length) {
             if(closedData.length === countSuccess) {
-              console.log("Process Passed")
+              core.info("hooray.... Step Passed No Open PR's found created by Dependabot")
             } else {
-              console.log("Process Failed because " + countFailed + " PR is/are not merged")
+              core.setFailed("Step Failed because " + countFailed + " PR is/are not merged")
             }
           }
         })
       })
     } else {
-      console.log("No closed Data found")
+      core.info("No closed PR's found")
     }
 }
 
 const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
   const combinePullsParams = await getInputs();
-  console.log(combinePullsParams)
+  core.info(combinePullsParams)
   const { githubToken } = combinePullsParams;
   try {
     const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
-    console.log("process.env brnch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
-    console.log("default_branch is " + data.default_branch)
+    core.info("process.env brnch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
+    core.info("default_branch is " + data.default_branch)
     if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {
         const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all`, {
@@ -111,20 +111,20 @@ const run = async (): Promise<void> => {
               return data.state == 'open';
             });
             if(openData.length > 0) {
-              console.log("Open data found")
+              core.info("Open PR's found Created by Dependabot")
               scenario1(openData, githubToken)
             } else {
-              console.log("No open data found")
+              core.info("No Open PR's found Created by Dependabot Checking for Closed PR's Merged Status...")
               var closedData = dependabotFilteredData.filter(function(data : any){
                 return data.state == 'closed';
               });
               scenario2(closedData, githubToken)
             }
           } else {
-            console.log("No dependabot data found")
+            core.info("No dependabot data found")
           }
         } else {
-          console.log("No data found")
+          core.info("No data found")
         }
         
         // const combinePullsParams = await getInputs();
