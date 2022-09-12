@@ -92,11 +92,10 @@ const run = async (): Promise<void> => {
   console.log(combinePullsParams)
   const { githubToken } = combinePullsParams;
   try {
-    const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
+    const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
-    console.log("process.env brnch is")
-    console.log(process.env.GITHUB_REF?.replace("refs/heads/",''))
+    console.log("process.env brnch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
     console.log("default_branch is " + data.default_branch)
     if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {

@@ -160,13 +160,12 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 _c.label = 2;
             case 2:
                 _c.trys.push([2, 10, , 11]);
-                return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After", {
+                return [4 /*yield*/, axios_1["default"].get("".concat(process.env.GITHUB_API_URL, "/repos/").concat(process.env.GITHUB_REPOSITORY), {
                         headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 3:
                 data = (_c.sent()).data;
-                console.log("process.env brnch is");
-                console.log((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", ''));
+                console.log("process.env brnch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
                 console.log("default_branch is " + data.default_branch);
                 if (!(data.default_branch === ((_b = process.env.GITHUB_REF) === null || _b === void 0 ? void 0 : _b.replace("refs/heads/", '')))) return [3 /*break*/, 8];
                 _c.label = 4;
