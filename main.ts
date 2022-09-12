@@ -5,7 +5,6 @@ import * as core from '@actions/core';
 import getInputs from './utils/getInputs';
 // import { repoPRFetch } from './utils/repoPRFetch'
 import axios from 'axios';
-const token = ''
 
 const handleError = (err: Error) => {
   core.error(err);
@@ -92,14 +91,14 @@ const run = async (): Promise<void> => {
   const combinePullsParams = await getInputs();
   console.log(combinePullsParams)
   const { githubToken } = combinePullsParams;
-  console.log("token issssss "+githubToken)
   try {
     const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
-    console.log(process.env)
+    console.log("process.env brnch is")
+    console.log(process.env.GITHUB_REF?.replace("refs/heads/",''))
     console.log("default_branch is " + data.default_branch)
-    if(data.default_branch === 'main') {
+    if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {
         const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all`, {
           headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },

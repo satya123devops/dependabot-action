@@ -43,7 +43,6 @@ var core = require("@actions/core");
 var getInputs_1 = require("./utils/getInputs");
 // import { repoPRFetch } from './utils/repoPRFetch'
 var axios_1 = require("axios");
-var token = '';
 var handleError = function (err) {
     core.error(err);
     core.setFailed("Unhandled error: ".concat(err));
@@ -150,33 +149,34 @@ function scenario2(closedData, githubToken) {
 }
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
     var combinePullsParams, githubToken, data, data_1, dependabotFilteredData, openData, closedData, e_1, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0: return [4 /*yield*/, (0, getInputs_1["default"])()];
             case 1:
-                combinePullsParams = _a.sent();
+                combinePullsParams = _c.sent();
                 console.log(combinePullsParams);
                 githubToken = combinePullsParams.githubToken;
-                console.log("token issssss " + githubToken);
-                _a.label = 2;
+                _c.label = 2;
             case 2:
-                _a.trys.push([2, 10, , 11]);
+                _c.trys.push([2, 10, , 11]);
                 return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After", {
                         headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 3:
-                data = (_a.sent()).data;
-                console.log(process.env);
+                data = (_c.sent()).data;
+                console.log("process.env brnch is");
+                console.log((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", ''));
                 console.log("default_branch is " + data.default_branch);
-                if (!(data.default_branch === 'main')) return [3 /*break*/, 8];
-                _a.label = 4;
+                if (!(data.default_branch === ((_b = process.env.GITHUB_REF) === null || _b === void 0 ? void 0 : _b.replace("refs/heads/", '')))) return [3 /*break*/, 8];
+                _c.label = 4;
             case 4:
-                _a.trys.push([4, 6, , 7]);
+                _c.trys.push([4, 6, , 7]);
                 return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all", {
                         headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 5:
-                data_1 = (_a.sent()).data;
+                data_1 = (_c.sent()).data;
                 if (data_1.length > 0) {
                     dependabotFilteredData = data_1.filter(function (data) {
                         return data.user.login.includes('dependabot');
@@ -206,16 +206,16 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 }
                 return [3 /*break*/, 7];
             case 6:
-                e_1 = _a.sent();
+                e_1 = _c.sent();
                 core.setFailed("combine-dependabot-pulls: ".concat(e_1.message));
                 return [3 /*break*/, 7];
             case 7: return [3 /*break*/, 9];
             case 8:
                 console.log("No main branch found");
-                _a.label = 9;
+                _c.label = 9;
             case 9: return [3 /*break*/, 11];
             case 10:
-                err_2 = _a.sent();
+                err_2 = _c.sent();
                 core.setFailed("combine-dependabot-branch: ".concat(err_2.message));
                 return [3 /*break*/, 11];
             case 11: return [2 /*return*/];
