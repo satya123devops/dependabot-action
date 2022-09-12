@@ -38,23 +38,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var core_1 = require("@actions/core");
 var getInputs = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var branchPrefix, mustBeGreen, combineBranchName, ignoreLabel, baseBranch, githubToken, openPR;
+    var baseBranch;
     return __generator(this, function (_a) {
-        branchPrefix = (0, core_1.getInput)('branchPrefix', { required: false });
-        mustBeGreen = (0, core_1.getBooleanInput)('mustBeGreen', { required: false });
-        combineBranchName = (0, core_1.getInput)('combineBranchName', { required: false });
-        ignoreLabel = (0, core_1.getInput)('ignoreLabel', { required: false });
         baseBranch = (0, core_1.getInput)('baseBranch', { required: true });
-        githubToken = (0, core_1.getInput)('githubToken', { required: false });
-        openPR = (0, core_1.getBooleanInput)('openPR', { required: false });
+        // const githubToken = getInput('githubToken', { required: false });
+        // const openPR = getBooleanInput('openPR', { required: false });
         return [2 /*return*/, {
-                branchPrefix: branchPrefix,
-                mustBeGreen: mustBeGreen,
-                combineBranchName: combineBranchName,
-                ignoreLabel: ignoreLabel,
-                baseBranch: baseBranch,
-                githubToken: githubToken,
-                openPR: openPR
+                // branchPrefix,
+                // mustBeGreen,
+                // combineBranchName,
+                // ignoreLabel,
+                baseBranch: baseBranch
             }];
     });
 }); };
