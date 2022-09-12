@@ -1,6 +1,6 @@
 import { getInput, getBooleanInput } from '@actions/core';
 
-const getInputs = async (): Promise<CombinePullsParams> => {
+const getInputs = async (): Promise<any> => {
   const branchPrefix = getInput('branchPrefix', { required: true });
   const mustBeGreen = getBooleanInput('mustBeGreen', { required: true });
   const combineBranchName = getInput('combineBranchName', { required: true });
