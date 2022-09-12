@@ -5,8 +5,8 @@ const getInputs = async (): Promise<any> => {
   // const mustBeGreen = getBooleanInput('mustBeGreen', { required: false });
   // const combineBranchName = getInput('combineBranchName', { required: false });
   // const ignoreLabel = getInput('ignoreLabel', { required: false });
-   const baseBranch = getInput('baseBranch', { required: true });
-  // const githubToken = getInput('githubToken', { required: false });
+  const baseBranch = getInput('baseBranch', { required: true });
+  const githubToken = getInput('githubToken', { required: true });
   // const openPR = getBooleanInput('openPR', { required: false });
 
   return {
@@ -14,8 +14,8 @@ const getInputs = async (): Promise<any> => {
     // mustBeGreen,
     // combineBranchName,
     // ignoreLabel,
-     baseBranch,
-    // githubToken,
+    baseBranch,
+    githubToken,
     // openPR,
   };
 };

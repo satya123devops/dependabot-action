@@ -24,10 +24,10 @@ inputs:
     description: "Branch to PR into"
     required: true
     default: "main"
-  # githubToken:
-  #   description: "The GitHub token used to create an authenticated client"
-  #   default: ${{ github.token }}
-  #   required: false
+  githubToken:
+    description: "The GitHub token used to create an authenticated client"
+    default: ${{ github.token }}
+    required: true
   # openPR:
   #   description: "Whether to open a PR with the created branch"
   #   default: true

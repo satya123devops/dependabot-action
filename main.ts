@@ -91,8 +91,8 @@ const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
   const combinePullsParams = await getInputs();
   console.log(combinePullsParams)
-  //const { githubToken } = combinePullsParams;
-  //console.log(githubToken)
+  const { githubToken } = combinePullsParams;
+  console.log("token issssss "+githubToken)
   try {
     const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After`, {
         headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
