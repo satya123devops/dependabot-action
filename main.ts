@@ -94,8 +94,8 @@ const run = async (): Promise<void> => {
     const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
-    core.info("process.env brnch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
-    core.info("default_branch is " + data.default_branch)
+    core.info("Action triggers from Branch: " + process.env.GITHUB_REF?.replace("refs/heads/",''))
+    core.warning("Default_branch is " + data.default_branch)
     if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {
         const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/pulls?state=all`, {
@@ -138,7 +138,7 @@ const run = async (): Promise<void> => {
         core.setFailed(`combine-dependabot-pulls: ${(e as Error).message}`);
       }
     } else {
-      console.log("No main branch found")
+      core.info("Skipping... Checking Dependabot alerts cause current branch is not a Default Branch")
     }
   } catch (err) {
     core.setFailed(`combine-dependabot-branch: ${(err as Error).message}`);
