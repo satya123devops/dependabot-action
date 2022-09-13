@@ -42,12 +42,7 @@ var getInputs = function () { return __awaiter(void 0, void 0, void 0, function 
     return __generator(this, function (_a) {
         baseBranch = (0, core_1.getInput)('baseBranch', { required: true });
         githubToken = (0, core_1.getInput)('githubToken', { required: true });
-        // const openPR = getBooleanInput('openPR', { required: false });
         return [2 /*return*/, {
-                // branchPrefix,
-                // mustBeGreen,
-                // combineBranchName,
-                // ignoreLabel,
                 baseBranch: baseBranch,
                 githubToken: githubToken
             }];
