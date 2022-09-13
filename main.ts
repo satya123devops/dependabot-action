@@ -14,7 +14,7 @@ const handleError = (err: Error) => {
 process.on('unhandledRejection', handleError);
 
 async function fetchPackageName (head_sha: any, base_sha: any, githubToken: any) {
-  const { data } = ( await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/dependency-graph/compare/${base_sha}...${head_sha}`, {
+  const { data } = ( await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/dependency-graph/compare/${base_sha}...${head_sha}`, {
       headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
   }));
   return data;
@@ -22,7 +22,7 @@ async function fetchPackageName (head_sha: any, base_sha: any, githubToken: any)
 
 async function fetchIsMerged (number: any, githubToken: any) {
   try {
-    const { status } = ( await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls/${number}/merge`, {
+    const { status } = ( await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/pulls/${number}/merge`, {
       headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
     if (status === 204) {return true}
@@ -89,7 +89,6 @@ function scenario2(closedData: any, githubToken: any) {
 const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
   const combinePullsParams = await getInputs();
-  core.info(combinePullsParams)
   const { githubToken } = combinePullsParams;
   try {
     const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
@@ -99,7 +98,7 @@ const run = async (): Promise<void> => {
     core.info("default_branch is " + data.default_branch)
     if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {
-        const { data } = (await axios.get(`https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all`, {
+        const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}/pulls?state=all`, {
           headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
         }));
         if(data.length > 0) {

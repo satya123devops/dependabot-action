@@ -53,7 +53,7 @@ function fetchPackageName(head_sha, base_sha, githubToken) {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/dependency-graph/compare/".concat(base_sha, "...").concat(head_sha), {
+                case 0: return [4 /*yield*/, axios_1["default"].get("".concat(process.env.GITHUB_API_URL, "/repos/").concat(process.env.GITHUB_REPOSITORY, "/dependency-graph/compare/").concat(base_sha, "...").concat(head_sha), {
                         headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
                 case 1:
@@ -71,7 +71,7 @@ function fetchIsMerged(number, githubToken) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls/".concat(number, "/merge"), {
+                    return [4 /*yield*/, axios_1["default"].get("".concat(process.env.GITHUB_API_URL, "/repos/").concat(process.env.GITHUB_REPOSITORY, "/pulls/").concat(number, "/merge"), {
                             headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                         })];
                 case 1:
@@ -155,7 +155,6 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 0: return [4 /*yield*/, (0, getInputs_1["default"])()];
             case 1:
                 combinePullsParams = _c.sent();
-                core.info(combinePullsParams);
                 githubToken = combinePullsParams.githubToken;
                 _c.label = 2;
             case 2:
@@ -171,7 +170,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 _c.label = 4;
             case 4:
                 _c.trys.push([4, 6, , 7]);
-                return [4 /*yield*/, axios_1["default"].get("https://api.github.com/repos/satya123devops/Code-Pipeline-Demo-After/pulls?state=all", {
+                return [4 /*yield*/, axios_1["default"].get("".concat(process.env.GITHUB_API_URL, "/repos/").concat(process.env.GITHUB_REPOSITORY, "/pulls?state=all"), {
                         headers: { Authorization: "Bearer ".concat(githubToken), Accept: 'application/json' }
                     })];
             case 5:
