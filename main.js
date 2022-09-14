@@ -161,8 +161,8 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 3:
                 data = (_c.sent()).data;
-                core.info("process.env branch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
-                core.info("default_branch is " + data.default_branch);
+                core.info("Action triggers from Branch: " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
+                core.warning("Default_branch is " + data.default_branch);
                 if (!(data.default_branch === ((_b = process.env.GITHUB_REF) === null || _b === void 0 ? void 0 : _b.replace("refs/heads/", '')))) return [3 /*break*/, 8];
                 _c.label = 4;
             case 4:
@@ -206,7 +206,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 return [3 /*break*/, 7];
             case 7: return [3 /*break*/, 9];
             case 8:
-                console.log("No main branch found");
+                core.info("Skipping... Checking Dependabot alerts cause current branch is not a Default Branch");
                 _c.label = 9;
             case 9: return [3 /*break*/, 11];
             case 10:
