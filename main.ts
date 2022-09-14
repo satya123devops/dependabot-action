@@ -1,10 +1,7 @@
 import * as core from '@actions/core';
-// import execa = require('execa');
-// import { context, getOctokit } from '@actions/github';
-// import { combinePRs } from './utils/pull-requests';
 import getInputs from './utils/getInputs';
-// import { repoPRFetch } from './utils/repoPRFetch'
 import axios from 'axios';
+// import { repoPRFetch } from './utils/repoPRFetch'
 
 const handleError = (err: Error) => {
   core.error(err);
@@ -52,7 +49,7 @@ function scenario1(openData: any, githubToken: any) {
           core.setFailed("Step Failed")
         }
       } else {
-        core.info("hooray.... Step Passed No Dependabot alerts found")
+        core.info("Step Passed with NO Dependabot alerts found")
       }
     });
   });
@@ -74,7 +71,7 @@ function scenario2(closedData: any, githubToken: any) {
           }
           if(mergingIndex === closedData.length) {
             if(closedData.length === countSuccess) {
-              core.info("hooray.... Step Passed No Open PR's found created by Dependabot")
+              core.info("Step Passed NO Open PR's found created by Dependabot")
             } else {
               core.setFailed("Step Failed because " + countFailed + " PR is/are not merged")
             }
@@ -94,7 +91,7 @@ const run = async (): Promise<void> => {
     const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
     }));
-    core.info("process.env brnch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
+    core.info("process.env branch is " + process.env.GITHUB_REF?.replace("refs/heads/",''))
     core.info("default_branch is " + data.default_branch)
     if(data.default_branch === process.env.GITHUB_REF?.replace("refs/heads/",'')) {
       try {

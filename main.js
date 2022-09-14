@@ -37,12 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var core = require("@actions/core");
-// import execa = require('execa');
-// import { context, getOctokit } from '@actions/github';
-// import { combinePRs } from './utils/pull-requests';
 var getInputs_1 = require("./utils/getInputs");
-// import { repoPRFetch } from './utils/repoPRFetch'
 var axios_1 = require("axios");
+// import { repoPRFetch } from './utils/repoPRFetch'
 var handleError = function (err) {
     core.error(err);
     core.setFailed("Unhandled error: ".concat(err));
@@ -112,7 +109,7 @@ function scenario1(openData, githubToken) {
                 }
             }
             else {
-                core.info("hooray.... Step Passed No Dependabot alerts found");
+                core.info("Step Passed with NO Dependabot alerts found");
             }
         });
     });
@@ -134,7 +131,7 @@ function scenario2(closedData, githubToken) {
                 }
                 if (mergingIndex === closedData.length) {
                     if (closedData.length === countSuccess) {
-                        core.info("hooray.... Step Passed No Open PR's found created by Dependabot");
+                        core.info("Step Passed NO Open PR's found created by Dependabot");
                     }
                     else {
                         core.setFailed("Step Failed because " + countFailed + " PR is/are not merged");
@@ -164,7 +161,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 3:
                 data = (_c.sent()).data;
-                core.info("process.env brnch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
+                core.info("process.env branch is " + ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.replace("refs/heads/", '')));
                 core.info("default_branch is " + data.default_branch);
                 if (!(data.default_branch === ((_b = process.env.GITHUB_REF) === null || _b === void 0 ? void 0 : _b.replace("refs/heads/", '')))) return [3 /*break*/, 8];
                 _c.label = 4;
