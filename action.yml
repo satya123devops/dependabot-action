@@ -28,6 +28,9 @@ inputs:
     description: "The GitHub token used to create an authenticated client"
     default: ${{ github.token }}
     required: true
+  manifestFileName:
+    description: "Manifest File name is required"
+    required: true
   # openPR:
   #   description: "Whether to open a PR with the created branch"
   #   default: true

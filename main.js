@@ -86,7 +86,8 @@ function fetchIsMerged(number, githubToken) {
     });
 }
 ;
-function scenario1(openData, githubToken) {
+function scenario1(openData, githubToken, manifestFileName) {
+    console.log("manifest set to " + manifestFileName);
     var openIndex = 0;
     openData.forEach(function (data) {
         var head_sha = data.head.sha;
@@ -96,7 +97,7 @@ function scenario1(openData, githubToken) {
             openIndex++;
             if (packageData.length > 0) {
                 var packageJsonData = packageData.filter(function (data) {
-                    return data.manifest == "package.json";
+                    return data.manifest == manifestFileName;
                 });
                 for (var _i = 0, packageJsonData_1 = packageJsonData; _i < packageJsonData_1.length; _i++) {
                     var data = packageJsonData_1[_i];
@@ -145,7 +146,7 @@ function scenario2(closedData, githubToken) {
     }
 }
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var combinePullsParams, githubToken, data, data_1, dependabotFilteredData, openData, closedData, e_1, err_2;
+    var combinePullsParams, githubToken, manifestFileName, data, data_1, dependabotFilteredData, openData, closedData, e_1, err_2;
     var _a, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -153,6 +154,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 1:
                 combinePullsParams = _c.sent();
                 githubToken = combinePullsParams.githubToken;
+                manifestFileName = combinePullsParams.manifestFileName;
                 _c.label = 2;
             case 2:
                 _c.trys.push([2, 10, , 11]);
@@ -182,7 +184,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                         });
                         if (openData.length > 0) {
                             core.info("Open PR's found Created by Dependabot");
-                            scenario1(openData, githubToken);
+                            scenario1(openData, githubToken, manifestFileName);
                         }
                         else {
                             core.info("No Open PR's found Created by Dependabot Checking for Closed PR's Merged Status...");

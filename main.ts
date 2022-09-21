@@ -28,7 +28,8 @@ async function fetchIsMerged (number: any, githubToken: any) {
   }
 };
 
-function scenario1(openData: any, githubToken: any) {
+function scenario1(openData: any, githubToken: any, manifestFileName: any) {
+  console.log("manifest set to " + manifestFileName)
   let openIndex = 0
   openData.forEach( (data: any) => {
     var head_sha = data.head.sha
@@ -38,7 +39,7 @@ function scenario1(openData: any, githubToken: any) {
       openIndex++
       if(packageData.length > 0) {
         var packageJsonData = packageData.filter(function(data : any){
-          return data.manifest == "package.json";
+          return data.manifest == manifestFileName;
         });
         for (var data of packageJsonData) {
           core.warning("NAME = " + data.name + "," + " VERSION = " + data.version + "," +
@@ -87,6 +88,7 @@ const run = async (): Promise<void> => {
   //console.log("repo url is " + repoPRFetch.URL)
   const combinePullsParams = await getInputs();
   const { githubToken } = combinePullsParams;
+  const { manifestFileName } = combinePullsParams;
   try {
     const { data } = (await axios.get(`${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`, {
         headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/json' },
@@ -108,7 +110,7 @@ const run = async (): Promise<void> => {
             });
             if(openData.length > 0) {
               core.info("Open PR's found Created by Dependabot")
-              scenario1(openData, githubToken)
+              scenario1(openData, githubToken, manifestFileName)
             } else {
               core.info("No Open PR's found Created by Dependabot Checking for Closed PR's Merged Status...")
               var closedData = dependabotFilteredData.filter(function(data : any){
